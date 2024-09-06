@@ -105,6 +105,7 @@ func (g *GoFeatureFlagAPI) ConfigurationHasChanged() (ConfigurationChangeStatus,
 	case http.StatusNotModified:
 		return FlagConfigurationNotChanged, nil
 	default:
+		fmt.Printf("###### %v %s\n", response.StatusCode, response.Status)
 		return ErrorConfigurationChange, fmt.Errorf("request failed with status: %v", response.Status)
 	}
 }
