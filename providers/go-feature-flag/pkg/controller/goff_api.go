@@ -6,6 +6,7 @@ import (
 	"fmt"
 	"net/http"
 	"net/url"
+	"os"
 	"path"
 
 	"github.com/open-feature/go-sdk-contrib/providers/go-feature-flag/pkg/model"
@@ -105,7 +106,8 @@ func (g *GoFeatureFlagAPI) ConfigurationHasChanged() (ConfigurationChangeStatus,
 	case http.StatusNotModified:
 		return FlagConfigurationNotChanged, nil
 	default:
-		fmt.Printf("###### %v %s\n", response.StatusCode, response.Status)
+		txt := fmt.Sprintf("###### %v %s\n", response.StatusCode, response.Status)
+		os.WriteFile("/tmp/goff.txt", []byte(txt), 0644)
 		return ErrorConfigurationChange, fmt.Errorf("request failed with status: %v", response.Status)
 	}
 }

@@ -3,6 +3,7 @@ package gofeatureflag
 import (
 	"context"
 	"fmt"
+	"os"
 	"time"
 
 	"github.com/open-feature/go-sdk-contrib/providers/go-feature-flag/pkg/controller"
@@ -243,6 +244,8 @@ func (p *Provider) startPolling(pollingInterval time.Duration) {
 						ProviderName: providerName, EventType: of.ProviderConfigChange,
 						ProviderEventDetails: of.ProviderEventDetails{Message: "Configuration has changed"}}
 				case controller.ErrorConfigurationChange:
+					txt := fmt.Sprintf("###### %s\n", err)
+					os.WriteFile("/tmp/goff-2.txt", []byte(txt), 0644)
 					p.events <- of.Event{
 						ProviderName: providerName, EventType: of.ProviderStale,
 						ProviderEventDetails: of.ProviderEventDetails{
